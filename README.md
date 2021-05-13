@@ -3,18 +3,19 @@ Bot to bring the price of a certain market directly from Serum Dex
 
 # Requirements
 spl-token-price-discord-bot 1.0+ requires the following:
-* NodeJS 11.16.0
+* NodeJS 11.15.0
 
 # Installing basic dependencies
 ```
 sudo apt update
 sudo apt install git
+sudo apt install build-essential
 sudo apt install curl
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 ```
 Reopen the terminal
 ```
-nvm install 11.16.0
+nvm install v11.15.0
 ```
 
 Check your node version
