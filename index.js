@@ -24,7 +24,6 @@ clientRedis.on('connect', function() {
 client.on('ready', async () => {
   console.info(`Bot is ready as: ${client.user.tag}!`);
   client.user.setStatus('online');
-  client.user.setUsername(`MOLA ${await Util.getMarketPriceSerum()}$`);
   client.user.setActivity('MOLA/USDC on Serum');
 });
 
