@@ -45,8 +45,8 @@ PONG
 
 Go to home directory
 ```
-cd home/ 
-git https://github.com/Moonlana/spl-token-price-discord-bot.git
+cd /home/ 
+git clone https://github.com/Moonlana/spl-token-price-discord-bot.git
 cd spl-token-price-discord-bot
 npm install --save
 npm install pm2 -g
