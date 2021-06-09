@@ -3,15 +3,13 @@ const Serum = require('@project-serum/serum');
 const env = require('../env.json');
 const moment = require("moment");
 const Discord = require('discord.js');
-
+const connection = new SolanaWeb3.Connection('https://api.mainnet-beta.solana.com');
 class Util {
     static async getMarketPriceSerum(){
         try {
-            let connection = new SolanaWeb3.Connection('https://api.mainnet-beta.solana.com');
             let marketAddress = new SolanaWeb3.PublicKey('HiyxvxXTf4VB1W7SiHcyysdskxTCfwmpeTqdJ8tettnD');
             let programId = new SolanaWeb3.PublicKey('9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin');
             let market = await Serum.Market.load(connection, marketAddress, {}, programId);
-            
             // Fetching orderbooks
             let bids = await market.loadBids(connection);
             let asks = await market.loadAsks(connection);
@@ -58,6 +56,19 @@ class Util {
             global.clientRedis.set('consult:'+msg.author.id, JSON.stringify(getConsult));
             global.clientRedis.expire('consult:'+msg.author.id , env.SECONDCONSULT);
             return false;
+        }
+    }
+
+    static async getSupply(){
+        try {
+            const mintPublicKey = new SolanaWeb3.PublicKey(env.MINT_ADDRESS);
+            let supply = await connection.getTokenSupply(mintPublicKey);
+            supply = supply.value.uiAmount;
+            const tokenAddressPublicKey = new SolanaWeb3.PublicKey(env.TOKEN_ADDRESS);
+            const balance = await connection.getTokenAccountBalance(tokenAddressPublicKey);
+            return {supply: supply, circ_supply: supply - balance.value.uiAmount};
+        } catch (error) {
+            console.error( error );
         }
     }
 }
