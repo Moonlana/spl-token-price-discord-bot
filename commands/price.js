@@ -7,10 +7,11 @@ exports.execute = async ( msg ) => {
         
       if( !await Util.getConsultUserRedis(msg) ) {
           let markPrice = await Util.getMarketPriceSerum();
+          const supply = await Util.getSupply();
           const priceEmbed = new Discord.RichEmbed()
               .setColor('#fffff0')
               .setTitle(`${env.TOKENPAIR} ≈ ${markPrice}$`)
-              .setDescription(`Market Cap: ${(env.CIRCSUPPLY*markPrice).toLocaleString(undefined,{ minimumFractionDigits: 2 })}$\nCirc. Supply: ${env.CIRCSUPPLY.toLocaleString(undefined,{ minimumFractionDigits: 2 })}\nTotal Supply: ${env.TOKENSUPPLY.toLocaleString(undefined,{ minimumFractionDigits: 2 })}\nFully Diluted: ${ (env.TOKENSUPPLY * markPrice).toLocaleString(undefined,{ minimumFractionDigits: 2 }) }$`)
+              .setDescription(`Market Cap: ${(supply.circ_supply*markPrice).toLocaleString(undefined,{ minimumFractionDigits: 2 })}$\nCirc. Supply: ${supply.circ_supply.toLocaleString(undefined,{ minimumFractionDigits: 2 })}\nTotal Supply: ${supply.supply.toLocaleString(undefined,{ minimumFractionDigits: 2 })}\nFully Diluted: ${ (supply.supply * markPrice).toLocaleString(undefined,{ minimumFractionDigits: 2 }) }$`)
               .setThumbnail('https://i.ibb.co/NtrSyDc/moonlana.jpg')
               .setFooter('Data provided by Serum Dex')
           msg.channel.send(priceEmbed);
