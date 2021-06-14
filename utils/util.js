@@ -4,6 +4,7 @@ const env = require('../env.json');
 const moment = require("moment");
 const Discord = require('discord.js');
 const connection = new SolanaWeb3.Connection('https://api.mainnet-beta.solana.com');
+const request = require("request");
 class Util {
     static async getMarketPriceSerum(){
         try {
@@ -69,6 +70,24 @@ class Util {
             return {supply: supply, circ_supply: supply - balance.value.uiAmount};
         } catch (error) {
             console.error( error );
+        }
+    }
+
+    static async getMarketPriceGecko(){
+        try {
+            return await new Promise( (resolve, reject ) => {
+                request('https://api.coingecko.com/api/v3/coins/moonlana', { json: true }, (error, body) => {
+                    if (error) {
+                        logger.error(error);
+                    } else {
+                        if (body.body) {
+                            resolve( body.body);
+                        }
+                    }
+                 });
+            }); 
+        } catch (error) {
+            console.error( error ); 
         }
     }
 }
