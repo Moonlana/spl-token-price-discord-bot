@@ -23,8 +23,12 @@ clientRedis.on('connect', function() {
 
 client.on('ready', async () => {
   console.info(`Bot is ready as: ${client.user.tag}!`);
-  client.user.setStatus('online');
-  client.user.setActivity('MOLA/USDC on Serum');
+  let geckoPrice = await Util.getMarketPriceGecko();
+  client.user.setPresence({ status: 'online',
+  game: {
+    name: `${geckoPrice.market_data.current_price.usd}$ MOLA/USDC on Coingecko`,
+    type: 'WATCHING'
+  }});
 });
 
 // add all commands
